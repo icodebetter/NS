@@ -20,6 +20,8 @@ public class RedisUtil {
 		return j;		
 	}
 	
+	public static void closeAll(){
+	}
 	
 	public static void close(String host){
 		Jedis j = redisMap.get(host);

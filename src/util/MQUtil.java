@@ -38,6 +38,18 @@ public class MQUtil {
 		return conn;
 	}
 	
+	public static void closeAll(){
+		
+		for(Channel channel:channelMap.values())try{
+			if(channel.isOpen())channel.close();
+		}catch (Exception e) {}
+	
+		for(Connection conn:connMap.values())try{
+			if(conn.isOpen())conn.close();
+		}catch (Exception e) {}
+		
+	}
+	
 	public static void close(String host, String queueName){
 		if(queueName!=null) {
 			String key = host + queueName;
@@ -46,8 +58,7 @@ public class MQUtil {
 				if(channel.isOpen())try {channel.close();} 
 				catch (Exception e) {}
 				connMap.remove(key);
-			}
-				
+			}				
 		}
 		
 		Connection conn = connMap.get(host);
@@ -55,10 +66,7 @@ public class MQUtil {
 			if(conn.isOpen())try {conn.close();} 
 			catch (Exception e) {}
 			connMap.remove(host);
-
-
 		}
-
 	}
 	
 	
