@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>nanoservice2</groupId>
@@ -37,12 +36,12 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.graalvm/polyglot-tck -->
+
+		<!-- https://mvnrepository.com/artifact/org.graalvm.js/js -->
 		<dependency>
-			<groupId>org.graalvm</groupId>
-			<artifactId>polyglot-tck</artifactId>
-			<version>0.31</version>
+			<groupId>org.graalvm.js</groupId>
+			<artifactId>js</artifactId>
+			<version>1.0.0-rc10</version>
 		</dependency>
-		
 	</dependencies>
 </project>

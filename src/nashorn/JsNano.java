@@ -1,7 +1,6 @@
 package nashorn;
 
 import java.io.IOException;
-import org.graalvm.polyglot.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,8 +42,7 @@ public class JsNano {
 	public static int requestCount = 0;
 	public static boolean debug = false;
 
-	//public static ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
-	public static Context polyglot = Context.create();
+	public static ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
 
 	public static Map paramMap = new HashMap();
 
@@ -64,7 +62,7 @@ public class JsNano {
 								(message + ":" + threadId).toString().getBytes("UTF-8"));
 						channel.basicCancel(message);
 					}
-					Object funcResult = null;//((Invocable) engine).invokeFunction("jsNanoMQ", message, paramMap);
+					Object funcResult = ((Invocable) engine).invokeFunction("jsNanoMQ", message, paramMap);
 					;
 					if (debug)
 						System.out.println(new Date() + " - #" + reqNum + " -> "
@@ -125,12 +123,17 @@ public class JsNano {
 			try {
 				long startTime = System.currentTimeMillis();
 				if (debug)System.out.println(new Date() + " - START " + projectId + "-" + nanoServiceId + (id!=null ? "-"+id:""));
-				//engine.eval("function jsNano(params){\n" + code + "\n}");
-				//Object funcResult = ((Invocable) engine).invokeFunction("jsNano", paramMap);
-				Object funcResult = polyglot.eval("js", code);
+				engine.eval("function jsNano(params){\n" + code + "\n}");
+				for(int ti=0;ti<20;ti++){
+					long startTime2 = System.currentTimeMillis();
+					
+					Object funcResult = ((Invocable) engine).invokeFunction("jsNano", paramMap);
+					
+					System.out.println(ti + ". " + (System.currentTimeMillis() - startTime2) + "ms; Result: " + funcResult);
+				}
 
 //				for(int qi=0,j=0;qi<1000000000;qi++)j++;
-				if (debug)System.out.println(new Date() + " - END " + (System.currentTimeMillis() - startTime) + "ms; Result: " + funcResult);
+				if (debug)System.out.println(new Date() + " - END " + (System.currentTimeMillis() - startTime) + "ms");
 				if (callbackQueue != null && id != null) {
 					MQUtil.getChannel4Queue(rabbitHost, callbackQueue).basicPublish("", callbackQueue, null,
 							("icb-finish:" + id).toString().getBytes("UTF-8"));
@@ -146,7 +149,7 @@ public class JsNano {
 			}
 
 		} else {
-			//engine.eval("function jsNanoMQ(msg,params){\n" + code + "\n}");
+			engine.eval("function jsNanoMQ(msg,params){\n" + code + "\n}");
 			System.out.println("MQ thread count / host / fetch queue / result queue / error queue");
 			System.out.println(
 					threadCount + " / " + rabbitHost + " / " + fetchQueue + " / " + resultQueue + " / " + errorQueue);
