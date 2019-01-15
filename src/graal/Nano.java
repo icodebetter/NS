@@ -5,11 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.script.Invocable;
 import javax.script.ScriptException;
 
 import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Language;
 import org.graalvm.polyglot.Value;
 
 import com.rabbitmq.client.AMQP;

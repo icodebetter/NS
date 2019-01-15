@@ -37,11 +37,27 @@ public class RedisUtil {
 		return j.set(k, v);		
 	}
 	
-	/*
-	public static String add(String host, String k, String v){
+	
+	public static long rpush(String host, String k, String v){
 		Jedis j = getConnection(host);
-		return j.(k, v);		
-	}*/
+		return j.rpush(k, v);		
+	}
+	
+	public static long lpush(String host, String k, String v){
+		Jedis j = getConnection(host);
+		return j.lpush(k, v);		
+	}
+	
+	
+	public static String rpop(String host, String k, String v){
+		Jedis j = getConnection(host);
+		return j.rpop(k);		
+	}
+	
+	public static String lpop(String host, String k, String v){
+		Jedis j = getConnection(host);
+		return j.lpop(k);		
+	}
 	
 	public static String get(String host, String k){
 		Jedis j = getConnection(host);
